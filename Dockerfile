@@ -159,6 +159,11 @@ RUN AVAILABLE_TERRAFORM_VERSIONS="1.2.9 1.3.10 1.4.6 ${DEFAULT_TERRAFORM_VERSION
 # Creating the individual distro builds using targets
 FROM alpine:${ALPINE_TAG} AS alpine
 
+ARG DEFAULT_TERRAFORM_VERSION
+ENV DEFAULT_TERRAFORM_VERSION=${DEFAULT_TERRAFORM_VERSION}
+ARG DEFAULT_CONFTEST_VERSION
+ENV DEFAULT_CONFTEST_VERSION=${DEFAULT_CONFTEST_VERSION}
+
 # atlantis user for gosu and OpenShift compatibility
 RUN addgroup atlantis && \
     adduser -S -G atlantis atlantis && \
@@ -196,6 +201,11 @@ CMD ["server"]
 
 # Stage 2 - Debian
 FROM debian-base AS debian
+
+ARG DEFAULT_TERRAFORM_VERSION
+ENV DEFAULT_TERRAFORM_VERSION=${DEFAULT_TERRAFORM_VERSION}
+ARG DEFAULT_CONFTEST_VERSION
+ENV DEFAULT_CONFTEST_VERSION=${DEFAULT_CONFTEST_VERSION}
 
 # Add atlantis user to Debian as well
 RUN useradd --create-home --user-group --shell /bin/bash atlantis && \
